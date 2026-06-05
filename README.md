@@ -1,4 +1,4 @@
-# 🇵🇪 Peruvian Payroll Calculation Engine
+# 🇵🇪 Motor de Cálculo de Planillas
 
 <p align="center">
   <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
@@ -7,87 +7,88 @@
   <img src="https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white" alt="Arch Linux" />
 </p>
 
-An architecture-first, decoupled, and strongly-typed mathematical engine built to automate complex payroll processing and statutory benefits under Peruvian labor regulations.
+Un motor matemático fuertemente tipado, desacoplado y diseñado con una arquitectura orientada a dominios, construido para automatizar procesos complejos de planilla y beneficios laborales conforme a la legislación peruana.
 
-> 💡 **Architectural Origin:** This engine was originally developed as part of a monolithic payroll system. To eliminate technical debt and maximize reusability, the entire computational core was successfully refactored and isolated into this infrastructure-agnostic library.
-
----
-
-## 🛠️ Key Features
-
-The engine abstracts complex, shifting legal frameworks into deterministic mathematical models:
-
-* **Multi-Regime Support:** Tailored compliance computation logic for **General**, **MYPE (Micro/Small Enterprise)**, **Agrarian (Law 31110)**, and **Civil Construction (CAPECO agreements)** labor regimes.
-* **Pure Mathematical Core:** Zero side-effects. Zero database roundtrips. Functions are structured as strict black boxes that process raw data inputs and map out detailed payload itemizations.
-* **Statutory Benefits Automated:** Native calculations for Compensación por Tiempo de Servicios (CTS), Gratificaciones, Vacaciones, and Liquidaciones.
-* **Tax & Deductions Processing:** Built-in computation for 5th Category Income Tax (Quinta Categoría), ONP, and private pension systems (AFP insurance, commissions, and contributions).
+> 💡 **Origen Arquitectónico:** Este motor fue desarrollado originalmente como parte de un sistema monolítico de planillas. Con el objetivo de eliminar deuda técnica y maximizar su reutilización, todo el núcleo computacional fue refactorizado y aislado exitosamente en esta librería independiente de cualquier infraestructura.
 
 ---
 
-## 📐 Architecture & Pattern Design
+## 🛠️ Características Principales
 
-The engine adheres to a **Parametric Design Pattern** utilizing purely declarative data layers:
+El motor abstrae marcos normativos complejos y cambiantes en modelos matemáticos determinísticos:
+
+* **Soporte Multi-Régimen:** Lógica de cálculo adaptada para los regímenes **General**, **MYPE (Micro y Pequeña Empresa)**, **Agrario (Ley 31110)** y **Construcción Civil (Convenios CAPECO)**.
+* **Núcleo Matemático Puro:** Cero efectos secundarios. Cero consultas a bases de datos. Las funciones operan como cajas negras estrictamente determinísticas que reciben datos de entrada y generan resultados detallados.
+* **Automatización de Beneficios Sociales:** Cálculo nativo de Compensación por Tiempo de Servicios (CTS), Gratificaciones, Vacaciones y Liquidaciones.
+* **Procesamiento de Impuestos y Descuentos:** Cálculo integrado del Impuesto a la Renta de Quinta Categoría, ONP y sistemas privados de pensiones (AFP: aportes, seguros y comisiones).
+
+---
+
+## 📐 Arquitectura y Diseño de Patrones
+
+El motor sigue un **Patrón de Diseño Paramétrico** basado en capas de datos puramente declarativas:
 
 ```
-  [ Consumer App / API / ERP ]
-               │
-               ▼ (CalcularPlanillaInput)
+  [ Aplicación Consumidora / API / ERP ]
+                  │
+                  ▼ (CalcularPlanillaInput)
    ┌───────────────────────────────────────┐
-   │         Central Engine Router         │
-   │      (src/lib/calculations/index.ts)  │
+   │      Enrutador Central del Motor      │
+   │    (src/lib/calculations/index.ts)    │
    └───────────┬───────────┬───────────────┘
                │           │
       ┌────────┴────┐     ┌┴────────────┐
-      │ MYPE/General│     │ Civil Const.│  ... (Other Regimes)
+      │ MYPE/General│     │ Construcción│  ... (Otros Regímenes)
       └────────┬────┘     └┬────────────┘
                │           │
                ▼           ▼
    ┌───────────────────────────────────────┐
-   │     Isolated Mathematical Core        │
-   │  - Revenue  - Deductions  - Benefits  │
+   │      Núcleo Matemático Aislado        │
+   │ - Ingresos - Descuentos - Beneficios  │
    └───────────────────────────────────────┘
                │
                ▼ (ResultadoPlanilla)
 ```
 
-### Pure Function Signature Example
+### Ejemplo de Firma de Función Pura
 
 ```typescript
-// Deterministic design: Same input parameters will always produce the exact same outcome.
+// Diseño determinístico: Los mismos parámetros de entrada
+// siempre producirán exactamente el mismo resultado.
 export function calcularAsignacionFamiliar(
-  sueldoBase: number, 
+  sueldoBase: number,
   tieneHijos: boolean
 ): number {
   if (!tieneHijos) return 0;
-  return sueldoBase * ASIGNACION_FAMILIAR_PORCENTAJE; // 10% statutory constant
+  return sueldoBase * ASIGNACION_FAMILIAR_PORCENTAJE; // Constante legal del 10%
 }
 ```
 
 ---
 
-## 🧪 Robust Testing Layer
+## 🧪 Capa Robusta de Pruebas
 
-Quality assurance is enforced via exhaustive mathematical unit test suites. The calculations are verified against official regulatory scenarios provided by SUNAT and MTPE.
+La calidad del sistema se garantiza mediante suites exhaustivas de pruebas unitarias matemáticas. Los cálculos son validados contra escenarios regulatorios oficiales definidos por SUNAT y el MTPE.
 
 ```bash
-# Run the calculation test suites
+# Ejecutar las pruebas de cálculo
 npm run test
 ```
 
-* `*.test.ts` files map real-world payroll spreadsheets into software assertions to ensure arithmetic integrity across edge cases.
+* Los archivos `*.test.ts` convierten escenarios reales de hojas de cálculo de planilla en aserciones de software para garantizar la integridad aritmética incluso en casos límite.
 
 ---
 
-## 📦 Tech Stack
+## 📦 Stack Tecnológico
 
-* **Language:** TypeScript (Strongly-typed data contracts)
-* **Runtime Environment:** Node.js
-* **Testing Framework:** Vitest (Fast unit assertion testing)
+* **Lenguaje:** TypeScript (Contratos de datos fuertemente tipados)
+* **Entorno de Ejecución:** Node.js
+* **Framework de Pruebas:** Vitest (Pruebas unitarias rápidas y eficientes)
 
 ---
 
-## 👔 Portfolio Case Study Metrics
+## 👔 Métricas del Caso de Estudio
 
-* **Dependencies:** 0 (Zero external runtime dependencies; pure algorithmic execution).
-* **Test Coverage:** Over 95% statement coverage across core financial modules.
-* **Coupling Factor:** 0% infrastructure binding (Completely detached from ORMs, routers, or database connections).
+* **Dependencias:** 0 (Sin dependencias externas en tiempo de ejecución; ejecución puramente algorítmica).
+* **Cobertura de Pruebas:** Más del 95% de cobertura de sentencias en los módulos financieros principales.
+* **Factor de Acoplamiento:** 0% de dependencia con infraestructura (completamente desacoplado de ORMs, routers o conexiones a bases de datos).
